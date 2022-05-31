@@ -6,10 +6,10 @@ It is a just simple tutorial or example for making simple RESTful API with Go us
 ## Installation & Run
 ```bash
 # Download this project
-go get github.com/mingrammer/go-todo-rest-api-example
+go get github.com/mingrammer/golang-simple
 ```
 
-Before running API server, you should set the database config with yours or set the your database config with my values on [config.go](https://go-todo-rest-api-example/blob/master/config/config.go)
+Before running API server, you should set the database config with yours or set the your database config with my values on [config.go](https://golang-simple/blob/master/config/config.go)
 ```go
 func GetConfig() *Config {
 	return &Config{
@@ -26,9 +26,9 @@ func GetConfig() *Config {
 
 ```bash
 # Build and Run
-cd go-todo-rest-api-example
+cd golang-simple
 go build
-./go-todo-rest-api-example
+./golang-simple
 
 # API Endpoint : http://127.0.0.1:3000
 ```
