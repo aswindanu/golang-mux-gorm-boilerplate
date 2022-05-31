@@ -1,8 +1,8 @@
 package main
 
 import (
-	"go-todo-rest-api-example/app"
-	"go-todo-rest-api-example/config"
+	"golang-simple/app"
+	"golang-simple/config"
 )
 
 func main() {

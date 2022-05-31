@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"go-todo-rest-api-example/app/handler"
-	"go-todo-rest-api-example/app/model"
-	"go-todo-rest-api-example/config"
+	"golang-simple/app/handler"
+	"golang-simple/app/model"
+	"golang-simple/config"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -21,16 +21,35 @@ type App struct {
 
 // Initialize initializes the app with predefined configuration
 func (a *App) Initialize(config *config.Config) {
-	dbURI := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=True",
-		config.DB.Username,
-		config.DB.Password,
-		config.DB.Host,
-		config.DB.Port,
-		config.DB.Name,
-		config.DB.Charset)
+	var err error
+	var db *gorm.DB
+	var dbURI string
 
-	db, err := gorm.Open(config.DB.Dialect, dbURI)
+	// MYSQL
+	if config.DB.Dialect == "mysql" {
+		dbURI = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=True",
+			config.DB.Username,
+			config.DB.Password,
+			config.DB.Host,
+			config.DB.Port,
+			config.DB.Name,
+			config.DB.Charset,
+		)
+	}
+	// POSTGRES
+	if config.DB.Dialect == "postgres" {
+		dbURI = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable",
+			config.DB.Host,
+			config.DB.Username,
+			config.DB.Password,
+			config.DB.Name,
+			config.DB.Port,
+		)
+	}
+
+	db, err = gorm.Open(config.DB.Dialect, dbURI)
 	if err != nil {
+		fmt.Println("dbURI: ", dbURI)
 		log.Fatal("Could not connect database:" + err.Error())
 	}
 

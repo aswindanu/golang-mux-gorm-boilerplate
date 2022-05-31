@@ -1,0 +1,54 @@
+version: '3.8'
+services:
+  # FIXME
+  # db:
+  #     container_name: db
+  #     platform: linux/x86_64
+  #     image: mysql:latest
+  #     restart: unless-stopped
+  #     ports:
+  #       - 3306
+  #     volumes:
+  #       - database_data:/var/lib/mysql/data
+  #     environment:
+  #       MYSQL_DATABASE: todoapp
+  #       MYSQL_USER: app
+  #       MYSQL_PASSWORD: password
+  #       MYSQL_ROOT_PASSWORD: password 
+  #       TZ: 'Asia/Jakarta'
+
+  db:
+      container_name: db
+      image: postgres:latest
+      restart: unless-stopped
+      ports:
+        - 5432
+      volumes:
+        - database_data:/var/lib/postgresql/data
+      environment:
+        POSTGRES_DB: 'todoapp'
+        POSTGRES_USER: 'root'
+        POSTGRES_PASSWORD: 'password'
+        TZ: 'Asia/Jakarta'
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # entrypoint:
+    #   - "scripts/start_local.sh"
+    # env_file:
+    #   - '.env'
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/golang-simple
+
+volumes:
+  database_data:
+
+networks:
+    default:
+        name: test

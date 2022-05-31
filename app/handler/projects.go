@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"go-todo-rest-api-example/app/model"
+	"golang-simple/app/model"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"

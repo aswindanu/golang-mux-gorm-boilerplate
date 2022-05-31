@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"go-todo-rest-api-example/app/model"
+	"golang-simple/app/model"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
