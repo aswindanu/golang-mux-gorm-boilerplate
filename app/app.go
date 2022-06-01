@@ -5,8 +5,14 @@ import (
 	"log"
 	"net/http"
 
-	"golang-simple/app/handler"
+	// handler
+	"golang-simple/app/handler/project"
+	"golang-simple/app/handler/task"
+
+	// model
 	"golang-simple/app/model"
+	
+	// config
 	"golang-simple/config"
 
 	"github.com/gorilla/mux"
@@ -61,22 +67,22 @@ func (a *App) Initialize(config *config.Config) {
 // setRouters sets the all required routers
 func (a *App) setRouters() {
 	// Routing for handling the projects
-	a.Get("/projects", a.handleRequest(handler.GetAllProjects))
-	a.Post("/projects", a.handleRequest(handler.CreateProject))
-	a.Get("/projects/{title}", a.handleRequest(handler.GetProject))
-	a.Put("/projects/{title}", a.handleRequest(handler.UpdateProject))
-	a.Delete("/projects/{title}", a.handleRequest(handler.DeleteProject))
-	a.Put("/projects/{title}/archive", a.handleRequest(handler.ArchiveProject))
-	a.Delete("/projects/{title}/archive", a.handleRequest(handler.RestoreProject))
+	a.Get("/projects", a.handleRequest(project.GetAllProjects))
+	a.Post("/projects", a.handleRequest(project.CreateProject))
+	a.Get("/projects/{title}", a.handleRequest(project.GetProject))
+	a.Put("/projects/{title}", a.handleRequest(project.UpdateProject))
+	a.Delete("/projects/{title}", a.handleRequest(project.DeleteProject))
+	a.Put("/projects/{title}/archive", a.handleRequest(project.ArchiveProject))
+	a.Delete("/projects/{title}/archive", a.handleRequest(project.RestoreProject))
 
 	// Routing for handling the tasks
-	a.Get("/projects/{title}/tasks", a.handleRequest(handler.GetAllTasks))
-	a.Post("/projects/{title}/tasks", a.handleRequest(handler.CreateTask))
-	a.Get("/projects/{title}/tasks/{id:[0-9]+}", a.handleRequest(handler.GetTask))
-	a.Put("/projects/{title}/tasks/{id:[0-9]+}", a.handleRequest(handler.UpdateTask))
-	a.Delete("/projects/{title}/tasks/{id:[0-9]+}", a.handleRequest(handler.DeleteTask))
-	a.Put("/projects/{title}/tasks/{id:[0-9]+}/complete", a.handleRequest(handler.CompleteTask))
-	a.Delete("/projects/{title}/tasks/{id:[0-9]+}/complete", a.handleRequest(handler.UndoTask))
+	a.Get("/projects/{title}/tasks", a.handleRequest(task.GetAllTasks))
+	a.Post("/projects/{title}/tasks", a.handleRequest(task.CreateTask))
+	a.Get("/projects/{title}/tasks/{id:[0-9]+}", a.handleRequest(task.GetTask))
+	a.Put("/projects/{title}/tasks/{id:[0-9]+}", a.handleRequest(task.UpdateTask))
+	a.Delete("/projects/{title}/tasks/{id:[0-9]+}", a.handleRequest(task.DeleteTask))
+	a.Put("/projects/{title}/tasks/{id:[0-9]+}/complete", a.handleRequest(task.CompleteTask))
+	a.Delete("/projects/{title}/tasks/{id:[0-9]+}/complete", a.handleRequest(task.UndoTask))
 }
 
 // Get wraps the router for GET method
