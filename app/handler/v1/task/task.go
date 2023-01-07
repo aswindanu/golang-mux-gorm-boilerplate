@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"golang-simple/app/handler"
-	"golang-simple/app/handler/project"
+	"golang-mux-gorm-boilerplate/app/handler"
+	"golang-mux-gorm-boilerplate/app/handler/v1/project"
 
-	"golang-simple/app/model"
+	"golang-mux-gorm-boilerplate/app/model"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"

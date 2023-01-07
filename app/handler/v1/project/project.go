@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"golang-simple/app/handler"
-	"golang-simple/app/model"
+	"golang-mux-gorm-boilerplate/app/handler"
+
+	"golang-mux-gorm-boilerplate/app/model"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"golang-simple/app"
-	"golang-simple/config"
+	"golang-mux-gorm-boilerplate/app"
+	"golang-mux-gorm-boilerplate/config"
 )
 
 func main() {

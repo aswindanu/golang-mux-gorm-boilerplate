@@ -1,48 +1,35 @@
 package model
 
 import (
-	"time"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-type Project struct {
-	gorm.Model
-	Title    string `gorm:"unique" json:"title"`
-	Archived bool   `json:"archived"`
-	Tasks    []Task `gorm:"ForeignKey:ProjectID" json:"tasks"`
+type DBModels struct {
+	User       interface{}
+	BeratBadan interface{}
+	Project    interface{}
+	Task       interface{}
 }
 
-func (p *Project) Archive() {
-	p.Archived = true
-}
-
-func (p *Project) Restore() {
-	p.Archived = false
-}
-
-type Task struct {
-	gorm.Model
-	Title string `json:"title"`
-	// Priority  string     `gorm:"type:ENUM('0', '1', '2', '3');default:'0'" json:"priority"` //FIXME, see this https://stackoverflow.com/a/67743613
-	Deadline  *time.Time `gorm:"default:null" json:"deadline"`
-	Done      bool       `json:"done"`
-	ProjectID uint       `json:"project_id"`
-}
-
-func (t *Task) Complete() {
-	t.Done = true
-}
-
-func (t *Task) Undo() {
-	t.Done = false
+func Models() *DBModels {
+	return &DBModels{
+		&User{},
+		&BeratBadan{},
+		&Project{},
+		&Task{},
+	}
 }
 
 // DBMigrate will create and migrate the tables, and then make the some relationships if necessary
 func DBMigrate(db *gorm.DB) *gorm.DB {
-	db.AutoMigrate(&Project{}, &Task{})
-	db.Model(&Task{}).AddForeignKey("project_id", "projects(id)", "CASCADE", "CASCADE")
+	db.AutoMigrate(
+		&User{},
+		&BeratBadan{},
+		&Project{},
+		&Task{},
+	)
+	// db.Model(&Task{}).AddForeignKey("project_id", "projects(id)", "CASCADE", "CASCADE")
 	return db
 }

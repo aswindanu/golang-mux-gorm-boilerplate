@@ -17,19 +17,20 @@ services:
   #       MYSQL_ROOT_PASSWORD: password 
   #       TZ: 'Asia/Jakarta'
 
-  db:
-      container_name: db
-      image: postgres:latest
-      restart: unless-stopped
-      ports:
-        - 5432
-      volumes:
-        - database_data:/var/lib/postgresql/data
-      environment:
-        POSTGRES_DB: 'todoapp'
-        POSTGRES_USER: 'root'
-        POSTGRES_PASSWORD: 'password'
-        TZ: 'Asia/Jakarta'
+  # db:
+  #   image: postgres:latest
+  #   container_name: db
+  #   restart: unless-stopped
+  #   ports:
+  #     - 5432:5432
+  #   volumes:
+  #     - database_data:/var/lib/postgresql/data
+  #     - ./db/init:/docker-entrypoint-initdb.d
+  #   environment:
+  #     POSTGRES_DB: ${DATABASE_NAME?Variable not set}
+  #     POSTGRES_USER: ${DATABASE_USERNAME?Variable not set}
+  #     POSTGRES_PASSWORD: ${DATABASE_PASSWORD?Variable not set}
+  #     TZ: 'Asia/Jakarta'
 
   backend:
     build:
@@ -39,12 +40,21 @@ services:
     #   - "scripts/start_local.sh"
     # env_file:
     #   - '.env'
-    depends_on:
-      - db
+    # depends_on:
+    #   - db
     ports:
       - "3000:3000"
     volumes:
-      - .:/golang-simple
+      - .:/golang-mux-gorm-boilerplate
+    environment:
+      DATABASE_CONNECTION: ${DATABASE_CONNECTION?Variable not set}
+      DATABASE_HOST: ${DATABASE_HOST?Variable not set}
+      DATABASE_PORT: ${DATABASE_PORT?Variable not set}
+      DATABASE_USERNAME: ${DATABASE_USERNAME?Variable not set}
+      DATABASE_NAME: ${DATABASE_NAME?Variable not set}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD?Variable not set}
+      DATABASE_URL: ${DATABASE_URL?Variable not set}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY?Variable not set}
 
 volumes:
   database_data:

@@ -6,10 +6,10 @@ It is a just simple tutorial or example for making simple RESTful API with Go us
 ## Installation & Run
 ```bash
 # Download this project
-go get github.com/mingrammer/golang-simple
+go get github.com/aswindanu/golang-mux-gorm-boilerplate
 ```
 
-Before running API server, you should set the database config with yours or set the your database config with my values on [config.go](https://golang-simple/blob/master/config/config.go)
+Before running API server, you should set the database config with yours or set the your database config with my values on [config.go](https://golang-mux-gorm-boilerplate/blob/master/config/config.go)
 ```go
 func GetConfig() *Config {
 	return &Config{
@@ -24,11 +24,18 @@ func GetConfig() *Config {
 }
 ```
 
+To do hot reload, use nodemon command to start
+see docs https://techinscribed.com/5-ways-to-live-reloading-go-applications/
 ```bash
+DEVELOPMENT
+./start.sh
+
+
+PRODUCTION
 # Build and Run
-cd golang-simple
+cd golang-mux-gorm-boilerplate
 go build
-./golang-simple
+./golang-mux-gorm-boilerplate
 
 # API Endpoint : http://127.0.0.1:3000
 ```
