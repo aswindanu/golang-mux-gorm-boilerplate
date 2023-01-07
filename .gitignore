@@ -20,4 +20,5 @@ app/server/pkg
 
 # Others
 .env
+package-lock.json
 node_modules
