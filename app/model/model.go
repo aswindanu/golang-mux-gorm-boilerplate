@@ -6,19 +6,20 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-type DBModels struct {
-	User       interface{}
-	BeratBadan interface{}
-	Project    interface{}
-	Task       interface{}
-}
-
-func Models() *DBModels {
-	return &DBModels{
-		&User{},
-		&BeratBadan{},
-		&Project{},
-		&Task{},
+func Models() map[string]map[string]interface{} {
+	return map[string]map[string]interface{}{
+		"list": {
+			"User":       &[]User{},
+			"BeratBadan": &[]BeratBadan{},
+			"Project":    &[]Project{},
+			"Task":       &[]Task{},
+		},
+		"get": {
+			"User":       &User{},
+			"BeratBadan": &BeratBadan{},
+			"Project":    &Project{},
+			"Task":       &Task{},
+		},
 	}
 }
 

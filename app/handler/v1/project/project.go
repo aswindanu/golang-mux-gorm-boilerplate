@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"golang-mux-gorm-boilerplate/app/handler"
+	"golang-mux-gorm-boilerplate/app/service"
 
 	"golang-mux-gorm-boilerplate/app/model"
 
@@ -12,10 +12,23 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+const MODEL = "Project"
+
 func GetAllProjects(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	projects := []model.Project{}
 	db.Find(&projects)
-	handler.RespondJSON(w, http.StatusOK, projects)
+	service.RespondJSON(w, http.StatusOK, projects)
+}
+
+func GetProject(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+
+	title := vars["title"]
+	project := service.GetByFieldOr404(db, w, r, &model.Project{Title: title}, MODEL)
+	if project == nil {
+		return
+	}
+	service.RespondJSON(w, http.StatusOK, project)
 }
 
 func CreateProject(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
@@ -23,105 +36,81 @@ func CreateProject(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&project); err != nil {
-		handler.RespondError(w, http.StatusBadRequest, err.Error())
+		service.RespondError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 	defer r.Body.Close()
 
-	if err := db.Save(&project).Error; err != nil {
-		handler.RespondError(w, http.StatusInternalServerError, err.Error())
+	if err := service.CreateUpdateOr404(db, w, r, project); err != nil {
+		service.RespondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	handler.RespondJSON(w, http.StatusCreated, project)
-}
-
-func GetProject(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-
-	title := vars["title"]
-	project := GetProjectOr404(db, title, w, r)
-	if project == nil {
-		return
-	}
-	handler.RespondJSON(w, http.StatusOK, project)
+	service.RespondJSON(w, http.StatusCreated, project)
 }
 
 func UpdateProject(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	title := vars["title"]
-	project := GetProjectOr404(db, title, w, r)
+	project := service.GetByFieldOr404(db, w, r, &model.Project{Title: title}, MODEL)
 	if project == nil {
 		return
 	}
 
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&project); err != nil {
-		handler.RespondError(w, http.StatusBadRequest, err.Error())
+		service.RespondError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 	defer r.Body.Close()
 
-	if err := db.Save(&project).Error; err != nil {
-		handler.RespondError(w, http.StatusInternalServerError, err.Error())
+	if err := service.CreateUpdateOr404(db, w, r, *project); err != nil {
+		service.RespondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	handler.RespondJSON(w, http.StatusOK, project)
+	service.RespondJSON(w, http.StatusOK, project)
 }
 
 func DeleteProject(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	title := vars["title"]
-	project := GetProjectOr404(db, title, w, r)
+	project := service.GetByFieldOr404(db, w, r, &model.Project{Title: title}, MODEL)
 	if project == nil {
 		return
 	}
-	if err := db.Delete(&project).Error; err != nil {
-		handler.RespondError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
-	handler.RespondJSON(w, http.StatusNoContent, nil)
+	service.DeleteOr404(db, w, r, *project)
+	service.RespondJSON(w, http.StatusNoContent, nil)
 }
 
 func ArchiveProject(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	title := vars["title"]
-	project := GetProjectOr404(db, title, w, r)
+	project := service.GetByFieldOr404(db, w, r, &model.Project{Title: title}, MODEL)
 	if project == nil {
 		return
 	}
-	project.Archive()
-	if err := db.Save(&project).Error; err != nil {
-		handler.RespondError(w, http.StatusInternalServerError, err.Error())
+	// project.Archive()
+	if err := service.CreateUpdateOr404(db, w, r, *project); err != nil {
+		service.RespondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	handler.RespondJSON(w, http.StatusOK, project)
+	service.RespondJSON(w, http.StatusOK, project)
 }
 
 func RestoreProject(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	title := vars["title"]
-	project := GetProjectOr404(db, title, w, r)
+	project := service.GetByFieldOr404(db, w, r, &model.Project{Title: title}, MODEL)
 	if project == nil {
 		return
 	}
-	project.Restore()
-	if err := db.Save(&project).Error; err != nil {
-		handler.RespondError(w, http.StatusInternalServerError, err.Error())
+	// project.Restore()
+	if err := service.CreateUpdateOr404(db, w, r, *project); err != nil {
+		service.RespondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	handler.RespondJSON(w, http.StatusOK, project)
-}
-
-// GetProjectOr404 gets a project instance if exists, or respond the 404 error otherwise
-func GetProjectOr404(db *gorm.DB, title string, w http.ResponseWriter, r *http.Request) *model.Project {
-	project := model.Project{}
-	if err := db.First(&project, model.Project{Title: title}).Error; err != nil {
-		handler.RespondError(w, http.StatusNotFound, err.Error())
-		return nil
-	}
-	return &project
+	service.RespondJSON(w, http.StatusOK, project)
 }
