@@ -38,8 +38,8 @@ services:
       dockerfile: Dockerfile
     # entrypoint:
     #   - "scripts/start_local.sh"
-    # env_file:
-    #   - '.env'
+    env_file:
+      - '.env'
     # depends_on:
     #   - db
     ports:
