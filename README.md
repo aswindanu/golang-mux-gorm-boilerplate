@@ -3,55 +3,55 @@ A RESTful API example for simple todo application with Go
 
 It is a just simple tutorial or example for making simple RESTful API with Go using **gorilla/mux** (A nice mux library) and **gorm** (An ORM for Go)
 
-## Installation & Run
+## Installation
 ```bash
 # Download this project
 go get github.com/aswindanu/golang-mux-gorm-boilerplate
 ```
 
 Before running API server, you should set the database config with yours or set the your database config with my values on [config.go](https://golang-mux-gorm-boilerplate/blob/master/config/config.go)
-```go
-func GetConfig() *Config {
-	return &Config{
-		DB: &DBConfig{
-			Dialect:  "mysql",
-			Username: "guest",
-			Password: "Guest0000!",
-			Name:     "todoapp",
-			Charset:  "utf8",
-		},
-	}
-}
+
+```bash
+1. <Make a Postgresql database connection (server / localhost)>
+2. cp .env .env.sample
+3. <fill necessary env field>
 ```
 
-To do hot reload, use nodemon command to start
+for Development, we are using hot reload by installing nodemon.
 see docs https://techinscribed.com/5-ways-to-live-reloading-go-applications/
+
+##Run
 ```bash
-DEVELOPMENT
-./start.sh
+DEVELOPMENT # API Endpoint : http://127.0.0.1:3003
+- docker-compose up -d --build backend-dev
 
 
-PRODUCTION
+PRODUCTION # API Endpoint : http://127.0.0.1:3000
 # Build and Run
-cd golang-mux-gorm-boilerplate
-go build
-./golang-mux-gorm-boilerplate
-
-# API Endpoint : http://127.0.0.1:3000
+- docker-compose up -d --build backend
 ```
 
 ## Structure
 ```
 ├── app
 │   ├── app.go
-│   ├── handler          // Our API core handlers
-│   │   ├── common.go    // Common response functions
-│   │   ├── projects.go  // APIs for Project model
-│   │   └── tasks.go     // APIs for Task model
+│   ├── handler          	// Our API core handlers
+│   │   ├── common.go    	// Common response functions
+│   │   ├── projects
+│   │   │   └── projects.go // APIs for Project model
+│   │   ├── tasks
+│   │   │   └── tasks.go    // APIs for Task model
+│   │   └── ... (and so on)
+│   │
 │   └── model
-│       └── model.go     // Models for our application
+│       ├── model.go     	// Main models for our application
+│       ├── project.go     	// Project model go
+│       ├── task.go     	// Task model go
+│       └── ... (and so on)
+│
 ├── config
-│   └── config.go        // Configuration
+│   └── config.go        	// Configuration (this is mostly related with .env)
+│
 └── main.go
 ```
 
