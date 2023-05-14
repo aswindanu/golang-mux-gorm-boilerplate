@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	// module
+	"golang-mux-gorm-boilerplate/app/handler/v1/beratBadan"
 	"golang-mux-gorm-boilerplate/app/handler/v1/project"
 	"golang-mux-gorm-boilerplate/app/handler/v1/task"
 	"golang-mux-gorm-boilerplate/app/handler/v1/user"
@@ -85,6 +86,13 @@ func (a *App) routerV1() {
 	a.Get(a.endpointAPI(uri, "user/{id}"), a.handleRequest(user.GetUser))
 	a.Put(a.endpointAPI(uri, "user/{id}"), a.handleRequest(user.UpdateUser))
 	a.Delete(a.endpointAPI(uri, "user/{id}"), a.handleRequest(user.DeleteUser))
+
+	// Berat Badan
+	a.Get(a.endpointAPI(uri, "berat_badan"), a.handleRequest(beratBadan.GetAllBeratBadan))
+	a.Post(a.endpointAPI(uri, "berat_badan"), a.handleRequest(beratBadan.CreateBeratBadan))
+	a.Get(a.endpointAPI(uri, "berat_badan/{id}"), a.handleRequest(beratBadan.GetBeratBadan))
+	a.Put(a.endpointAPI(uri, "berat_badan/{id}"), a.handleRequest(beratBadan.UpdateBeratBadan))
+	a.Delete(a.endpointAPI(uri, "berat_badan/{id}"), a.handleRequest(beratBadan.DeleteBeratBadan))
 
 	// Project
 	a.Get(a.endpointAPI(uri, "projects"), a.handleRequest(project.GetAllProjects))

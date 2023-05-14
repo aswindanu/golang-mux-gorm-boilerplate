@@ -57,29 +57,29 @@ go build
 
 ## API
 
-#### /projects
+#### /api/v1/go/projects
 * `GET` : Get all projects
 * `POST` : Create a new project
 
-#### /projects/:title
+#### /api/v1/go/projects/:title
 * `GET` : Get a project
 * `PUT` : Update a project
 * `DELETE` : Delete a project
 
-#### /projects/:title/archive
+#### /api/v1/go/projects/:title/archive
 * `PUT` : Archive a project
 * `DELETE` : Restore a project 
 
-#### /projects/:title/tasks
+#### /api/v1/go/projects/:title/tasks
 * `GET` : Get all tasks of a project
 * `POST` : Create a new task in a project
 
-#### /projects/:title/tasks/:id
+#### /api/v1/go/projects/:title/tasks/:id
 * `GET` : Get a task of a project
 * `PUT` : Update a task of a project
 * `DELETE` : Delete a task of a project
 
-#### /projects/:title/tasks/:id/complete
+#### /api/v1/go/projects/:title/tasks/:id/complete
 * `PUT` : Complete a task of a project
 * `DELETE` : Undo a task of a project
 

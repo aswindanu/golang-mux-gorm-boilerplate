@@ -32,6 +32,31 @@ services:
   #     POSTGRES_PASSWORD: ${DATABASE_PASSWORD?Variable not set}
   #     TZ: 'Asia/Jakarta'
 
+  # DEVELOPMENT
+  backend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    # command: sh ./install.sh && sh ./start_dev.sh
+    env_file:
+      - '.env'
+    # depends_on:
+    #   - db
+    ports:
+      - "3003:3000"
+    volumes:
+      - .:/app
+    environment:
+      DATABASE_CONNECTION: ${DATABASE_CONNECTION?Variable not set}
+      DATABASE_HOST: ${DATABASE_HOST?Variable not set}
+      DATABASE_PORT: ${DATABASE_PORT?Variable not set}
+      DATABASE_USERNAME: ${DATABASE_USERNAME?Variable not set}
+      DATABASE_NAME: ${DATABASE_NAME?Variable not set}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD?Variable not set}
+      DATABASE_URL: ${DATABASE_URL?Variable not set}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY?Variable not set}
+
+  # PRODUCTION
   backend:
     build:
       context: .
